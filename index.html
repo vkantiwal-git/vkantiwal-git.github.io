@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sunita | Computer Science Teacher</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --pink: #ff6b9d;
+  --purple: #9b5de5;
+  --blue: #4cc9f0;
+  --yellow: #ffd60a;
+  --green: #06d6a0;
+  --orange: #f77f00;
+  --dark: #1a1a2e;
+  --light: #f8f9ff;
+  --white: #ffffff;
+  --display: 'Playfair Display', serif;
+  --body: 'DM Sans', sans-serif;
+}
+
+*{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:var(--body);background:var(--light);color:var(--dark);overflow-x:hidden;}
+
+/* CURSOR */
+.cursor{width:20px;height:20px;border:2px solid var(--pink);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transition:transform 0.1s,background 0.2s;transform:translate(-50%,-50%);}
+.cursor-dot{width:6px;height:6px;background:var(--pink);border-radius:50%;position:fixed;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);}
+
+/* NAV */
+nav{position:fixed;top:0;width:100%;z-index:100;padding:1rem 2rem;display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,0.85);backdrop-filter:blur(16px);border-bottom:1px solid rgba(155,93,229,0.12);}
+.nav-logo{font-family:var(--display);font-size:1.6rem;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-links{display:flex;gap:1.8rem;list-style:none;}
+.nav-links a{font-size:0.9rem;font-weight:500;color:var(--dark);text-decoration:none;position:relative;transition:color 0.2s;}
+.nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:2px;background:linear-gradient(90deg,var(--pink),var(--purple));transition:width 0.3s;border-radius:2px;}
+.nav-links a:hover{color:var(--purple);}
+.nav-links a:hover::after{width:100%;}
+.nav-toggle{display:none;flex-direction:column;gap:5px;cursor:pointer;}
+.nav-toggle span{width:24px;height:2px;background:var(--dark);border-radius:2px;transition:all 0.3s;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;align-items:center;position:relative;overflow:hidden;padding:6rem 2rem 2rem;}
+.hero-bg{position:absolute;inset:0;z-index:0;}
+.blob{position:absolute;border-radius:50%;filter:blur(70px);opacity:0.35;animation:float 6s ease-in-out infinite;}
+.blob1{width:400px;height:400px;background:var(--pink);top:-100px;right:-80px;animation-delay:0s;}
+.blob2{width:300px;height:300px;background:var(--blue);bottom:-60px;left:-60px;animation-delay:2s;}
+.blob3{width:250px;height:250px;background:var(--yellow);top:40%;left:35%;animation-delay:4s;}
+
+.hero-content{position:relative;z-index:1;max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:center;}
+.hero-text .badge{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,rgba(255,107,157,0.12),rgba(155,93,229,0.12));border:1px solid rgba(155,93,229,0.3);padding:6px 16px;border-radius:50px;font-size:0.82rem;font-weight:600;color:var(--purple);margin-bottom:1.5rem;animation:fadeUp 0.6s ease both;}
+.badge-dot{width:8px;height:8px;background:var(--green);border-radius:50%;animation:pulse 2s infinite;}
+.hero-text h1{font-family:var(--display);font-size:clamp(2.8rem,6vw,5rem);font-weight:900;line-height:1.1;margin-bottom:0.5rem;animation:fadeUp 0.7s 0.1s ease both;}
+.hero-text h1 .name{display:block;background:linear-gradient(135deg,var(--pink),var(--purple),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.hero-sub{font-size:1.15rem;color:var(--purple);font-weight:600;margin-bottom:1rem;animation:fadeUp 0.7s 0.2s ease both;}
+.hero-text p{font-size:1rem;color:#555;line-height:1.8;max-width:440px;margin-bottom:2rem;animation:fadeUp 0.7s 0.3s ease both;}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;animation:fadeUp 0.7s 0.4s ease both;}
+.btn{display:inline-block;padding:13px 30px;border-radius:50px;font-size:0.92rem;font-weight:600;text-decoration:none;cursor:pointer;transition:all 0.3s;border:none;font-family:var(--body);}
+.btn-primary{background:linear-gradient(135deg,var(--pink),var(--purple));color:white;box-shadow:0 8px 25px rgba(155,93,229,0.4);}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 12px 35px rgba(155,93,229,0.5);}
+.btn-outline{background:transparent;color:var(--purple);border:2px solid var(--purple);}
+.btn-outline:hover{background:var(--purple);color:white;transform:translateY(-3px);}
+
+/* HERO ILLUSTRATION */
+.hero-visual{position:relative;animation:fadeUp 0.8s 0.2s ease both;}
+.teacher-card{background:white;border-radius:24px;padding:2rem;box-shadow:0 20px 60px rgba(155,93,229,0.2);position:relative;text-align:center;}
+.teacher-avatar{width:120px;height:120px;border-radius:50%;margin:0 auto 1rem;background:linear-gradient(135deg,var(--pink),var(--purple));display:flex;align-items:center;justify-content:center;font-size:3.5rem;box-shadow:0 8px 30px rgba(155,93,229,0.3);}
+.teacher-card h3{font-family:var(--display);font-size:1.4rem;color:var(--dark);margin-bottom:0.25rem;}
+.teacher-card p{font-size:0.85rem;color:var(--purple);font-weight:600;margin-bottom:1.2rem;}
+.stat-row{display:flex;gap:1rem;justify-content:center;}
+.stat{text-align:center;padding:0.6rem 1rem;border-radius:12px;background:var(--light);}
+.stat-num{font-family:var(--display);font-size:1.4rem;font-weight:900;background:linear-gradient(135deg,var(--pink),var(--purple));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.stat-label{font-size:0.7rem;color:#888;font-weight:600;text-transform:uppercase;letter-spacing:0.5px;}
+.floating-badge{position:absolute;background:white;border-radius:14px;padding:10px 16px;box-shadow:0 8px 25px rgba(0,0,0,0.1);display:flex;align-items:center;gap:8px;font-size:0.82rem;font-weight:600;animation:float 4s ease-in-out infinite;}
+.fb1{top:-20px;right:-20px;color:var(--orange);border-left:3px solid var(--yellow);}
+.fb2{bottom:-16px;left:-20px;color:var(--green);border-left:3px solid var(--green);animation-delay:2s;}
+
+/* SECTION COMMON */
+section{padding:5rem 2rem;}
+.container{max-width:1100px;margin:0 auto;}
+.section-label{font-size:0.8rem;font-weight:700;letter-spacing:3px;text-transform:uppercase;margin-bottom:0.5rem;}
+.section-title{font-family:var(--display);font-size:clamp(2rem,4vw,2.8rem);font-weight:900;line-height:1.2;margin-bottom:1rem;}
+.section-sub{font-size:1rem;color:#666;max-width:500px;line-height:1.7;margin-bottom:3rem;}
+
+/* ABOUT */
+.about{background:white;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:center;}
+.about-img-wrap{position:relative;}
+.about-img{width:100%;border-radius:24px;background:linear-gradient(135deg,#ffecd2,#fcb69f);height:380px;display:flex;align-items:center;justify-content:center;font-size:8rem;position:relative;overflow:hidden;}
+.about-img::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(255,107,157,0.2),rgba(76,201,240,0.2));}
+.about-chip{position:absolute;background:white;border-radius:12px;padding:10px 18px;font-size:0.82rem;font-weight:700;box-shadow:0 6px 20px rgba(0,0,0,0.1);}
+.chip1{top:20px;left:-20px;color:var(--pink);}
+.chip2{bottom:20px;right:-20px;color:var(--purple);}
+.about-text .section-label{color:var(--pink);}
+.about-list{list-style:none;margin-top:1.5rem;display:flex;flex-direction:column;gap:0.75rem;}
+.about-list li{display:flex;align-items:flex-start;gap:12px;font-size:0.95rem;color:#444;line-height:1.6;}
+.about-list li span.icon{font-size:1.2rem;flex-shrink:0;margin-top:1px;}
+
+/* SKILLS */
+.skills{background:linear-gradient(135deg,#667eea15,#764ba215);}
+.skills .section-label{color:var(--purple);}
+.skills-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.5rem;}
+.skill-card{background:white;border-radius:20px;padding:2rem 1.5rem;text-align:center;box-shadow:0 4px 20px rgba(0,0,0,0.06);transition:all 0.3s;cursor:default;position:relative;overflow:hidden;}
+.skill-card::before{content:'';position:absolute;inset:0;opacity:0;transition:opacity 0.3s;}
+.skill-card:hover{transform:translateY(-8px);box-shadow:0 16px 40px rgba(0,0,0,0.12);}
+.skill-card:hover::before{opacity:1;}
+.skill-card:nth-child(1)::before{background:linear-gradient(135deg,rgba(255,107,157,0.06),rgba(255,107,157,0.02));}
+.skill-card:nth-child(2)::before{background:linear-gradient(135deg,rgba(155,93,229,0.06),rgba(155,93,229,0.02));}
+.skill-card:nth-child(3)::before{background:linear-gradient(135deg,rgba(76,201,240,0.06),rgba(76,201,240,0.02));}
+.skill-card:nth-child(4)::before{background:linear-gradient(135deg,rgba(6,214,160,0.06),rgba(6,214,160,0.02));}
+.skill-icon{font-size:2.8rem;margin-bottom:1rem;display:block;}
+.skill-card h3{font-family:var(--display);font-size:1.1rem;font-weight:700;margin-bottom:0.5rem;color:var(--dark);}
+.skill-bar-wrap{height:6px;background:#f0f0f0;border-radius:3px;margin:1rem 0 0.5rem;overflow:hidden;}
+.skill-bar{height:100%;border-radius:3px;transition:width 1.5s ease;}
+.skill-pct{font-size:0.8rem;font-weight:700;text-align:right;}
+
+/* COURSES */
+.courses{background:white;}
+.courses .section-label{color:var(--orange);}
+.courses-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.5rem;}
+.course-card{border-radius:20px;padding:2rem;color:white;position:relative;overflow:hidden;transition:transform 0.3s;cursor:pointer;}
+.course-card::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0);transition:background 0.3s;}
+.course-card:hover{transform:translateY(-6px);}
+.course-card:hover::after{background:rgba(0,0,0,0.08);}
+.c1{background:linear-gradient(135deg,#f093fb,#f5576c);}
+.c2{background:linear-gradient(135deg,#4facfe,#00f2fe);}
+.c3{background:linear-gradient(135deg,#43e97b,#38f9d7);}
+.course-icon{font-size:2.5rem;margin-bottom:1rem;display:block;}
+.course-card h3{font-family:var(--display);font-size:1.3rem;font-weight:700;margin-bottom:0.5rem;}
+.course-card p{font-size:0.88rem;opacity:0.9;line-height:1.6;margin-bottom:1.2rem;}
+.course-tag{display:inline-block;background:rgba(255,255,255,0.25);padding:4px 12px;border-radius:20px;font-size:0.75rem;font-weight:700;letter-spacing:0.5px;}
+
+/* GALLERY */
+.gallery{background:linear-gradient(135deg,#ffecd2,#fcb69f20);}
+.gallery .section-label{color:var(--orange);}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:auto auto;gap:1.2rem;}
+.gallery-item{border-radius:18px;overflow:hidden;position:relative;cursor:pointer;transition:transform 0.3s;}
+.gallery-item:hover{transform:scale(1.03);}
+.gallery-item.big{grid-row:span 2;}
+.gallery-img{width:100%;height:100%;min-height:160px;display:flex;align-items:center;justify-content:center;font-size:4rem;position:relative;}
+.gallery-img::after{content:attr(data-label);position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,0.6));color:white;padding:1.5rem 1rem 0.8rem;font-size:0.82rem;font-weight:600;opacity:0;transition:opacity 0.3s;}
+.gallery-item:hover .gallery-img::after{opacity:1;}
+.gi1{background:linear-gradient(135deg,#a18cd1,#fbc2eb);min-height:320px;}
+.gi2{background:linear-gradient(135deg,#fccb90,#d57eeb);}
+.gi3{background:linear-gradient(135deg,#a1c4fd,#c2e9fb);}
+.gi4{background:linear-gradient(135deg,#fd7043,#ff8a65);}
+.gi5{background:linear-gradient(135deg,#26a69a,#80cbc4);}
+
+/* CONTACT */
+.contact{background:var(--dark);color:white;}
+.contact .section-label{color:var(--blue);}
+.contact .section-title{color:white;}
+.contact .section-sub{color:rgba(255,255,255,0.6);}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start;}
+.contact-info{display:flex;flex-direction:column;gap:1.5rem;}
+.contact-item{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.5rem;background:rgba(255,255,255,0.06);border-radius:14px;border:1px solid rgba(255,255,255,0.1);transition:all 0.3s;}
+.contact-item:hover{background:rgba(255,255,255,0.1);border-color:var(--blue);transform:translateX(6px);}
+.contact-icon{font-size:1.5rem;width:48px;height:48px;background:linear-gradient(135deg,var(--pink),var(--purple));border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.contact-item h4{font-size:0.82rem;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:1px;margin-bottom:2px;}
+.contact-item p{font-size:0.95rem;color:white;font-weight:500;}
+
+/* FORM */
+.contact-form{display:flex;flex-direction:column;gap:1rem;}
+.form-group{display:flex;flex-direction:column;gap:6px;}
+.form-group label{font-size:0.82rem;font-weight:600;color:rgba(255,255,255,0.6);text-transform:uppercase;letter-spacing:1px;}
+.form-group input,.form-group textarea{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:12px;padding:13px 16px;color:white;font-family:var(--body);font-size:0.95rem;transition:all 0.3s;outline:none;resize:none;}
+.form-group input:focus,.form-group textarea:focus{border-color:var(--blue);background:rgba(76,201,240,0.08);}
+.form-group input::placeholder,.form-group textarea::placeholder{color:rgba(255,255,255,0.3);}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;}
+.btn-send{background:linear-gradient(135deg,var(--pink),var(--purple));color:white;border:none;padding:14px;border-radius:12px;font-size:0.95rem;font-weight:600;cursor:pointer;font-family:var(--body);transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-send:hover{transform:translateY(-3px);box-shadow:0 10px 30px rgba(155,93,229,0.5);}
+.form-success{display:none;text-align:center;padding:2rem;color:var(--green);font-weight:600;font-size:1.1rem;}
+
+/* FOOTER */
+footer{background:#111;color:rgba(255,255,255,0.5);text-align:center;padding:1.5rem;font-size:0.85rem;}
+footer span{color:var(--pink);}
+
+/* SCROLL REVEAL */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity 0.7s ease,transform 0.7s ease;}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* ANIMATIONS */
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-20px);}}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:0.5;transform:scale(0.8);}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .nav-links{display:none;position:fixed;top:60px;left:0;right:0;background:white;flex-direction:column;padding:1.5rem 2rem;gap:1.2rem;box-shadow:0 10px 30px rgba(0,0,0,0.1);}
+  .nav-links.open{display:flex;}
+  .nav-toggle{display:flex;}
+  .hero-content,.about-grid,.contact-grid{grid-template-columns:1fr;}
+  .hero-visual{order:-1;}
+  .gallery-grid{grid-template-columns:1fr 1fr;}
+  .gallery-item.big{grid-row:span 1;}
+  .gi1{min-height:160px;}
+  .form-row{grid-template-columns:1fr;}
+  .stat-row{gap:0.5rem;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-dot" id="cursorDot"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Sunita</div>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#home">Home</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#courses">Courses</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="nav-toggle" id="navToggle" onclick="toggleNav()">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-text">
+      <div class="badge"><span class="badge-dot"></span> Available for new sessions 2026</div>
+      <h1>Hello, I'm<span class="name">Sunita</span></h1>
+      <p class="hero-sub">💻 Computer Science Teacher</p>
+      <p>Passionate educator helping students unlock the world of technology — from computer basics to coding. Let's make learning fun and future-ready!</p>
+      <div class="hero-btns">
+        <a href="#courses" class="btn btn-primary">🎓 My Courses</a>
+        <a href="#contact" class="btn btn-outline">📩 Get In Touch</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="floating-badge fb1">🏆 Top Educator</div>
+      <div class="teacher-card">
+        <div class="teacher-avatar">👩‍🏫</div>
+        <h3>Sunita</h3>
+        <p>Computer Science Teacher</p>
+        <div class="stat-row">
+          <div class="stat"><div class="stat-num">8+</div><div class="stat-label">Years Exp.</div></div>
+          <div class="stat"><div class="stat-num">500+</div><div class="stat-label">Students</div></div>
+          <div class="stat"><div class="stat-num">3</div><div class="stat-label">Courses</div></div>
+        </div>
+      </div>
+      <div class="floating-badge fb2">✅ 500+ Students Taught</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-img-wrap reveal">
+        <div class="about-img">
+          👩‍💻
+          <div class="about-chip chip1">🎓 B.Sc CS</div>
+          <div class="about-chip chip2">💡 Tech Enthusiast</div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="section-label" style="color:var(--pink)">// about me</div>
+        <h2 class="section-title">Shaping Tomorrow's<br>Tech Leaders</h2>
+        <p style="color:#555;line-height:1.8;margin-bottom:1.5rem;">Hi! I'm Sunita, a dedicated Computer Science teacher with over 8 years of experience. I believe every student can learn to code — it just takes the right teacher, patience, and a sprinkle of creativity!</p>
+        <ul class="about-list">
+          <li><span class="icon">🎯</span> Specialized in teaching 10th class computer science curriculum with engaging, real-world examples.</li>
+          <li><span class="icon">💻</span> Passionate about bridging the gap between theory and practical technology skills.</li>
+          <li><span class="icon">🌱</span> Committed to helping every student build confidence in the digital world.</li>
+          <li><span class="icon">🏅</span> Recognized as a top educator for innovative teaching methods and student success rates.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section class="skills" id="skills">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="section-label" style="color:var(--purple)">// expertise</div>
+      <h2 class="section-title">My Skills</h2>
+      <p class="section-sub" style="margin:0 auto 3rem;">A blend of technical knowledge and teaching excellence to deliver the best learning experience.</p>
+    </div>
+    <div class="skills-grid">
+      <div class="skill-card reveal">
+        <span class="skill-icon">🌐</span>
+        <h3>HTML & Web</h3>
+        <p style="font-size:0.85rem;color:#777;margin-bottom:0.5rem;">Building web pages from scratch</p>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:90%;background:linear-gradient(90deg,var(--pink),#f093fb);" data-width="90"></div></div>
+        <div class="skill-pct" style="color:var(--pink)">90%</div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">💾</span>
+        <h3>Computer Fundamentals</h3>
+        <p style="font-size:0.85rem;color:#777;margin-bottom:0.5rem;">Hardware, software & OS concepts</p>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:95%;background:linear-gradient(90deg,var(--purple),#a18cd1);" data-width="95"></div></div>
+        <div class="skill-pct" style="color:var(--purple)">95%</div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">🧠</span>
+        <h3>Basic Programming</h3>
+        <p style="font-size:0.85rem;color:#777;margin-bottom:0.5rem;">Logic building & algorithms</p>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:80%;background:linear-gradient(90deg,var(--blue),#a1c4fd);" data-width="80"></div></div>
+        <div class="skill-pct" style="color:var(--blue)">80%</div>
+      </div>
+      <div class="skill-card reveal">
+        <span class="skill-icon">🎤</span>
+        <h3>Teaching & Communication</h3>
+        <p style="font-size:0.85rem;color:#777;margin-bottom:0.5rem;">Explaining complex topics simply</p>
+        <div class="skill-bar-wrap"><div class="skill-bar" style="width:98%;background:linear-gradient(90deg,var(--green),#43e97b);" data-width="98"></div></div>
+        <div class="skill-pct" style="color:var(--green)">98%</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COURSES -->
+<section class="courses" id="courses">
+  <div class="container">
+    <div class="reveal">
+      <div class="section-label" style="color:var(--orange)">// what i teach</div>
+      <h2 class="section-title">My Courses</h2>
+      <p class="section-sub">Carefully designed courses that make computer science accessible and enjoyable for every student.</p>
+    </div>
+    <div class="courses-grid">
+      <div class="course-card c1 reveal">
+        <span class="course-icon">🖥️</span>
+        <h3>10th Class Computer Science</h3>
+        <p>Full curriculum coverage — hardware, software, networks, HTML, and programming fundamentals. Board exam preparation included.</p>
+        <span class="course-tag">📚 Full Syllabus</span>
+      </div>
+      <div class="course-card c2 reveal">
+        <span class="course-icon">💡</span>
+        <h3>Basic IT Skills</h3>
+        <p>Learn MS Office, internet basics, email, and essential digital skills needed in everyday life and the workplace.</p>
+        <span class="course-tag">⚡ Beginner Friendly</span>
+      </div>
+      <div class="course-card c3 reveal">
+        <span class="course-icon">🚀</span>
+        <h3>Introduction to Programming</h3>
+        <p>Start your coding journey! Learn variables, loops, conditions, and write your very first programs step by step.</p>
+        <span class="course-tag">🧩 Hands-On Projects</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="section-label" style="color:var(--orange)">// moments</div>
+      <h2 class="section-title">Gallery</h2>
+      <p class="section-sub" style="margin:0 auto 2.5rem;">Snapshots from the classroom and beyond — where learning comes alive! 📸</p>
+    </div>
+    <div class="gallery-grid reveal">
+      <div class="gallery-item big">
+        <div class="gallery-img gi1" data-label="Classroom Teaching Session">👩‍🏫</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-img gi2" data-label="Computer Lab">💻</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-img gi3" data-label="Students Learning">👩‍🎓</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-img gi4" data-label="Coding Workshop">🖥️</div>
+      </div>
+      <div class="gallery-item">
+        <div class="gallery-img gi5" data-label="Digital Classroom">📊</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="container">
+    <div class="reveal" style="text-align:center;">
+      <div class="section-label">// get in touch</div>
+      <h2 class="section-title">Contact Me</h2>
+      <p class="section-sub" style="margin:0 auto 3rem;">Have questions about my courses or want to enroll? Reach out — I'd love to hear from you! 💬</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <div class="contact-item">
+          <div class="contact-icon">📧</div>
+          <div><h4>Email</h4><p>sunita@school.edu.pk</p></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📱</div>
+          <div><h4>Phone</h4><p>+92 300 123 4567</p></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">📍</div>
+          <div><h4>Location</h4><p>Punjab, Pakistan</p></div>
+        </div>
+        <div class="contact-item">
+          <div class="contact-icon">⏰</div>
+          <div><h4>Available</h4><p>Mon – Sat, 9am – 5pm</p></div>
+        </div>
+      </div>
+      <div class="reveal">
+        <div class="contact-form" id="contactForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" placeholder="Your name">
+            </div>
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" placeholder="Last name">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="your@email.com">
+          </div>
+          <div class="form-group">
+            <label>Subject</label>
+            <input type="text" placeholder="Course inquiry / Question">
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea rows="4" placeholder="Write your message here..."></textarea>
+          </div>
+          <button class="btn-send" onclick="sendMessage()">📨 Send Message</button>
+        </div>
+        <div class="form-success" id="formSuccess">
+          ✅ Thank you! Your message has been sent.<br>I'll get back to you within 24 hours! 🌟
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <span>Sunita</span> · Computer Science Teacher · Made with ❤️ for Education</p>
+</footer>
+
+<script>
+// Custom cursor
+const cursor = document.getElementById('cursor');
+const dot = document.getElementById('cursorDot');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+  dot.style.left = e.clientX + 'px';
+  dot.style.top = e.clientY + 'px';
+});
+document.querySelectorAll('a,button,.skill-card,.course-card,.gallery-item,.contact-item').forEach(el => {
+  el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2)'; cursor.style.background = 'rgba(155,93,229,0.15)'; });
+  el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; cursor.style.background = 'transparent'; });
+});
+
+// Nav toggle
+function toggleNav() {
+  document.getElementById('navLinks').classList.toggle('open');
+}
+
+// Scroll reveal
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((e, i) => {
+    if (e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('visible'), 100);
+    }
+  });
+}, { threshold: 0.1 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Skill bars animate on scroll
+const skillObserver = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.skill-bar').forEach(bar => {
+        const w = bar.getAttribute('data-width');
+        bar.style.width = '0%';
+        setTimeout(() => bar.style.width = w + '%', 200);
+      });
+    }
+  });
+}, { threshold: 0.3 });
+document.querySelectorAll('.skills-grid').forEach(el => skillObserver.observe(el));
+
+// Form submit
+function sendMessage() {
+  document.getElementById('contactForm').style.display = 'none';
+  document.getElementById('formSuccess').style.display = 'block';
+}
+
+// Active nav link on scroll
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 80) current = s.getAttribute('id'); });
+  document.querySelectorAll('.nav-links a').forEach(a => {
+    a.style.color = a.getAttribute('href') === '#' + current ? 'var(--purple)' : '';
+  });
+});
+</script>
+</body>
+</html>
